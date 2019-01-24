@@ -8,7 +8,7 @@ Its supposed to be a "game engine". The goal of this project was to make a PyGam
 
 ## TODO List
 
-[] Collision Detection
-[] Level support
-[] Move all settings to json files
-and a lot of stuff
+- [ ] Collision Detection
+- [ ] Level support
+- [ ] Move all settings to json files
+- and a lot of stuff
