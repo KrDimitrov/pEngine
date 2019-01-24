@@ -6,7 +6,6 @@ import pygame.time as time
 game_clock = time.Clock()
 
 def tick():
-    #while Settings.gameTime_running:
   dt = game_clock.tick(0)
   Game.controlls.doKeys()
   doMovement(dt)
