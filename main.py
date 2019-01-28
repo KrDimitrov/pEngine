@@ -16,14 +16,13 @@ def main():
 
     #TODO make this level dependant, aka, multiple level support and shit
     Renderer.init()
-    
+
     while Settings.gameRenderer_running:
         for event in pygame.event.get():
             HandleEvent(event)
         Game.gametime.tick()
         Renderer.draw(screen)
-        
-    _thread.exit()
+
     pygame.quit()
 
 
