@@ -21,14 +21,14 @@ setting_keys = {
 
 class PlayerControls(object):
     def __init__(self):
-        #set keycodes here. maybe clean this up?
-        self.keycode_strafe_left = setting_keys.get(KeyFunctions.STRAFE_LEFT, 0x404)
-        self.keycode_strafe_right = setting_keys.get(KeyFunctions.STRAFE_RIGHT, 0x404)
-        #check if keys are missing, this should really be improved!
-        if not (self.keycode_strafe_left != 0x404 and self.keycode_strafe_right != 0x404):
-            raise AttributeError("MISSING CONTROLL SETTINGS FOR PLAYER MOVEMENT")
+        #keycodes init here
+        #Later we access them with .KEYCODE_KEYFUNCTION
+        #For ex. self.KEYCODE_STRAFE_LEFT
+        for key_function in KeyFunctions:
+            setattr(self, "KEYCODE_" + key_function.name, setting_keys.get(key_function, 0x404))
+        #No longed check for missing key setting, might add later
 
-   def StrafeLeft(self):
+    def StrafeLeft(self):
         if not self.velocityX <= -self.VelocityCapX:
             setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, self.velocityX - self.AccelerationX)
         ECS.Entity.player_entity.setDirty()
@@ -55,10 +55,9 @@ class PlayerControls(object):
     #checks pressed keys and call their functions
     def checkKeys(self, pressed_keys):
         #check pressed keys here
-        strafe_left_pressed = self.keycode_strafe_left in pressed_keys
-        strafe_right_pressed = self.keycode_strafe_right in pressed_keys
+        strafe_left_pressed = self.KEYCODE_STRAFE_LEFT in pressed_keys
+        strafe_right_pressed = self.KEYCODE_STRAFE_RIGHT in pressed_keys
 
-        up_pressed = self.key
         #wot this? maybe improve?
         self.velocityX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value)
         self.checkKeysvelocityY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value)
@@ -80,7 +79,6 @@ class PlayerControls(object):
             self.StrafeRight()
             pass
 
-        
 
 
 playerControls = PlayerControls()
