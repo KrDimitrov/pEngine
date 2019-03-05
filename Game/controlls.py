@@ -4,12 +4,14 @@ import Game.ecs as ECS
 
 class KeyFunctions(Enum):
     NONE = 0x00
+    #ADD KEYS HERE
     STRAFE_RIGHT = 0x01
     STRAFE_LEFT = 0x02
 
 
 pressed_keys = set()
 
+#TODO make this read json
 setting_keys = {
         KeyFunctions.STRAFE_LEFT: 97,
         KeyFunctions.STRAFE_RIGHT: 100
@@ -17,16 +19,14 @@ setting_keys = {
         #KeyFunctions.STRAFE_RIGHT: 275
         }
 
+def isPressed(key_function):
+        return setting_keys.get(key_function, 0x404) in pressed_keys
+
 # MOVEMENT LOGIC
 
 class PlayerControls(object):
     def __init__(self):
-        #keycodes init here
-        #Later we access them with .KEYCODE_KEYFUNCTION
-        #For ex. self.KEYCODE_STRAFE_LEFT
-        for key_function in KeyFunctions:
-            setattr(self, "KEYCODE_" + key_function.name, setting_keys.get(key_function, 0x404))
-        #No longed check for missing key setting, might add later
+        #No longer check for missing key setting, might add later
 
     def StrafeLeft(self):
         if not self.velocityX <= -self.VelocityCapX:
@@ -55,8 +55,8 @@ class PlayerControls(object):
     #checks pressed keys and call their functions
     def checkKeys(self, pressed_keys):
         #check pressed keys here
-        strafe_left_pressed = self.KEYCODE_STRAFE_LEFT in pressed_keys
-        strafe_right_pressed = self.KEYCODE_STRAFE_RIGHT in pressed_keys
+        strafe_left_pressed = isPressed(KeyFunctions.STRAFE_LEFT)
+        strafe_right_pressed = isPressed(KeyFunctions.STRAFE_RIGHT)
 
         #wot this? maybe improve?
         self.velocityX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value)
