@@ -18,9 +18,9 @@ def init():
         ECS.Component(ECS.ComponentNames.VELOCITY_X, 0.0),
         ECS.Component(ECS.ComponentNames.VELOCITY_Y, 0.0),
         ECS.Component(ECS.ComponentNames.ACCELERATION_X, 0.05),
-        ECS.Component(ECS.ComponentNames.ACCELERATION_Y, 0),
+        ECS.Component(ECS.ComponentNames.ACCELERATION_Y, 0.05),
         ECS.Component(ECS.ComponentNames.VELOCITY_CAP_X, 0.15),
-        ECS.Component(ECS.ComponentNames.VELOCITY_CAP_Y, 1)
+        ECS.Component(ECS.ComponentNames.VELOCITY_CAP_Y, 0.15)
     ])
 
     ECS.Entity(2, [ECS.EntityType.TEXTURED, ECS.EntityType.MOVEABLE],
@@ -43,9 +43,9 @@ def draw(screen):
     for entity in ECS.Entity.dirty_textured_list:
          if entity.clean_rect != 0:
              rects.append(screen.fill((0, 0, 0), entity.clean_rect))
-         rect = screen.blit(entity.texture,
-                            (int(entity.PosX),
-                             int(entity.PosY)))
+         rect = screen.blit(entity.TEXTURE,
+                            (int(entity.POS_X),
+                             int(entity.POS_Y)))
          rects.append(rect)
          entity.unsetDirty(rect)
     # TODO this impacts performance heavily! OPTIMIZE!!!!

@@ -14,12 +14,12 @@ def tick():
 def doMovement(dt):
     for entity in ECS.Entity.moveable_list:
         
-        PosX = getattr(entity, ECS.ComponentNames.POS_X.value)
-        PosY = getattr(entity, ECS.ComponentNames.POS_Y.value)
-        VelocityX = getattr(entity, ECS.ComponentNames.VELOCITY_X.value)
-        VelocityY = getattr(entity, ECS.ComponentNames.VELOCITY_Y.value)
+        PosX = entity.POS_X
+        PosY = entity.POS_Y
+        VelocityX = entity.VELOCITY_X
+        VelocityY = entity.VELOCITY_Y
 
-        setattr(entity, ECS.ComponentNames.POS_X.value, PosX + VelocityX * dt)
-        setattr(entity, ECS.ComponentNames.POS_Y.value, PosY + VelocityY * dt)
+        entity.POS_X = PosX + VelocityX * dt
+        entity.POS_Y = PosY + VelocityY * dt
         entity.setDirty()
 

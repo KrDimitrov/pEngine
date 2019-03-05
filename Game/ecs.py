@@ -22,17 +22,17 @@ class Entity:
         self.clean_rect = 0
         #Parse Components
         for component in components_list:
-            if isinstance(component.name, ComponentNames):
-                setattr(self, component.name.value, component.value)
-            elif isinstance(component.name, str):
-                setattr(self, component.name, component.value)
+            if isinstance(component.componentType, ComponentNames):
+                setattr(self, component.componentType.name, component.value)
+            elif isinstance(component.componentType, str):
+                setattr(self, component.componentType, component.value)
             else:
                 raise TypeError("BROKEN ENTITY with eid " + str(eid) +
                         "\n!!The Component name should be either a Component Type, or a string!!")
         #Check if the entity has Positinal components passed, if not raise error
         try:
-            getattr(self, ComponentNames.POS_X.value)
-            getattr(self, ComponentNames.POS_Y.value)
+            getattr(self, ComponentNames.POS_X.name)
+            getattr(self, ComponentNames.POS_Y.name)
 
         except AttributeError:
             raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
@@ -44,20 +44,20 @@ class Entity:
                 Entity.collidable_list.append(self)
             if type == EntityType.MOVEABLE:
                 try:
-                    getattr(self, ComponentNames.VELOCITY_X.value)
-                    getattr(self, ComponentNames.VELOCITY_Y.value)
+                    getattr(self, ComponentNames.VELOCITY_X.name)
+                    getattr(self, ComponentNames.VELOCITY_Y.name)
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING VELOCITY COMPONENTS")
                 try:
-                    getattr(self, ComponentNames.ACCELERATION_X.value)
-                    getattr(self, ComponentNames.ACCELERATION_Y.value)
+                    getattr(self, ComponentNames.ACCELERATION_X.name)
+                    getattr(self, ComponentNames.ACCELERATION_Y.name)
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING ACCELERATION COMPONENTS!!! ")
                 try:
-                    getattr(self, ComponentNames.VELOCITY_CAP_X.value)
-                    getattr(self, ComponentNames.VELOCITY_CAP_Y.value)
+                    getattr(self, ComponentNames.VELOCITY_CAP_X.name)
+                    getattr(self, ComponentNames.VELOCITY_CAP_Y.name)
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING VELOCITY_CAP COMPONENTS!!")
@@ -65,7 +65,7 @@ class Entity:
                 Entity.moveable_list.append(self)
             if type == EntityType.TEXTURED:
                 try:
-                    getattr(self, ComponentNames.TEXTURE.value)
+                    getattr(self, ComponentNames.TEXTURE.name)
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING TEXTURE COMPONENT!!!")
@@ -77,8 +77,8 @@ class Entity:
 
 
 class Component:
-    def __init__(self, name, value):
-        self.name = name
+    def __init__(self, componentType, value):
+        self.componentType = componentType
         self.value = value
 
 
@@ -98,6 +98,9 @@ class ComponentNames(Enum):
     ACCELERATION_Y = "AccelerationY"
     VELOCITY_CAP_X = "VelocityCapX"
     VELOCITY_CAP_Y = "VelocityCapY"
+
+    def __str__(self):
+        return self.name
 
 
 

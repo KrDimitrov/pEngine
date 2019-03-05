@@ -33,14 +33,14 @@ def isPressed(key_function):
 ##### X AXIS
 def StrafeLeft(velocityX, VelocityCapX, AccelerationX):
     if not velocityX <= -VelocityCapX:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, velocityX - AccelerationX)
+        ECS.Entity.player_entity.VELOCITY_X = velocityX - AccelerationX
         ECS.Entity.player_entity.setDirty()
     print(velocityX)
     pass
 
 def StrafeRight(velocityX, VelocityCapX, AccelerationX):
     if not velocityX >= VelocityCapX:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, velocityX + AccelerationX)
+        ECS.Entity.player_entity.VELOCITY_X = velocityX + AccelerationX
         ECS.Entity.player_entity.setDirty()
     print(velocityX)
     pass
@@ -50,29 +50,29 @@ def StrafeSlow(velocityX):
     if velocityX == 0:
         return
     if velocityX < 0:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, 0)
+        ECS.Entity.player_entity.VELOCITY_X = 0
     elif velocityX > 0:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, 0)
+        ECS.Entity.player_entity.VELOCITY_X = 0
         print("SLOW")
     pass
 
 ##### Y AXIS
 def Up(velocityY, VelocityCapY, AccelerationY):
     if not velocityY <= -VelocityCapY:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value, velocityY - AccelerationY)
+        ECS.Entity.player_entity.VELOCITY_Y = velocityY - AccelerationY
         ECS.Entity.player_entity.setDirty()
 
 def Down(velocityY, VelocityCapY, AccelerationY):
     if not velocityY >= VelocityCapY:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value, velocityY + AccelerationY)
+        ECS.Entity.player_entity.VELOCITY_Y = velocityY + AccelerationY
         ECS.Entity.player_entity.setDirty()
 
 def SlowY(velocityY):
     if velocityY == 0: return
     if velocityY < 0:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value, 0)
+        ECS.Entity.player_entity.VELOCITY_Y = 0
     elif velocityY > 0:
-        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value, 0)
+        ECS.Entity.player_entity.VELOCITY_Y = 0
 #checks pressed keys and call their functions
 def doKeys():
     #check pressed keys here
@@ -82,13 +82,13 @@ def doKeys():
     down_pressed = isPressed(KeyFunctions.DOWN)
 
     #TODO get rid of getatts
-    velocityX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value)
-    velocityY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value)
-    VelocityCapX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_CAP_X.value)
-    VelocityCapY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_CAP_Y.value)
+    velocityX = ECS.Entity.player_entity.VELOCITY_X
+    velocityY = ECS.Entity.player_entity.VELOCITY_Y
+    VelocityCapX = ECS.Entity.player_entity.VELOCITY_CAP_X
+    VelocityCapY = ECS.Entity.player_entity.VELOCITY_CAP_Y
 
-    AccelerationX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_X.value)
-    AccelerationY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_Y.value)
+    AccelerationX = ECS.Entity.player_entity.ACCELERATION_X
+    AccelerationY = ECS.Entity.player_entity.ACCELERATION_Y
 
     #slow down/stop if no keys pressed (x axis)
     if not strafe_left_pressed and not strafe_right_pressed:
