@@ -21,22 +21,27 @@ setting_keys = {
 
 class PlayerControls(object):
     def __init__(self):
+        #set keycodes here. maybe clean this up?
         self.keycode_strafe_left = setting_keys.get(KeyFunctions.STRAFE_LEFT, 0x404)
         self.keycode_strafe_right = setting_keys.get(KeyFunctions.STRAFE_RIGHT, 0x404)
+        #check if keys are missing, this should really be improved!
         if not (self.keycode_strafe_left != 0x404 and self.keycode_strafe_right != 0x404):
             raise AttributeError("MISSING CONTROLL SETTINGS FOR PLAYER MOVEMENT")
-    def StrafeLeft(self):
+
+   def StrafeLeft(self):
         if not self.velocityX <= -self.VelocityCapX:
             setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, self.velocityX - self.AccelerationX)
         ECS.Entity.player_entity.setDirty()
         print(self.velocityX)
         pass
+
     def StrafeRight(self):
         if not self.velocityX >= self.VelocityCapX:
             setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, self.velocityX + self.AccelerationX)
         ECS.Entity.player_entity.setDirty()
         print(self.velocityX)
         pass
+
     def StrafeSlow(self):
         if self.velocityX == 0:
             return
@@ -47,10 +52,14 @@ class PlayerControls(object):
             print("SLOW")
         pass
 
+    #checks pressed keys and call their functions
     def checkKeys(self, pressed_keys):
+        #check pressed keys here
         strafe_left_pressed = self.keycode_strafe_left in pressed_keys
         strafe_right_pressed = self.keycode_strafe_right in pressed_keys
 
+        up_pressed = self.key
+        #wot this? maybe improve?
         self.velocityX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value)
         self.checkKeysvelocityY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value)
         self.VelocityCapX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_CAP_X.value)
@@ -59,9 +68,11 @@ class PlayerControls(object):
         self.AccelerationX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_X.value)
         self.AccelerationY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_Y.value)
 
+        #slow down/stop if no keys pressed (x axis)
         if not strafe_left_pressed and not strafe_right_pressed:
             self.StrafeSlow()
             return
+
         if strafe_left_pressed:
             self.StrafeLeft()
             pass
@@ -69,7 +80,7 @@ class PlayerControls(object):
             self.StrafeRight()
             pass
 
-
+        
 
 
 playerControls = PlayerControls()
