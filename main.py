@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import pygame
 from Game import settings as Settings
 from Game import renderer as Renderer
