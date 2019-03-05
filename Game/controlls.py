@@ -24,64 +24,62 @@ def isPressed(key_function):
 
 # MOVEMENT LOGIC
 
-class PlayerControls(object):
-    def __init__(self):
         #No longer check for missing key setting, might add later
 
-    def StrafeLeft(self):
-        if not self.velocityX <= -self.VelocityCapX:
-            setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, self.velocityX - self.AccelerationX)
-        ECS.Entity.player_entity.setDirty()
-        print(self.velocityX)
+def StrafeLeft(velocityX, VelocityCapX, AccelerationX):
+    if not velocityX <= -VelocityCapX:
+        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, velocityX - AccelerationX)
+    ECS.Entity.player_entity.setDirty()
+    print(velocityX)
+    pass
+
+def StrafeRight(velocityX, VelocityCapX, AccelerationX):
+    if not velocityX >= VelocityCapX:
+        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, velocityX + AccelerationX)
+    ECS.Entity.player_entity.setDirty()
+    print(velocityX)
+    pass
+
+#TODO implement momentum?
+def StrafeSlow(velocityX):
+    if velocityX == 0:
+        return
+    if velocityX < 0:
+        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, 0)
+    elif velocityX > 0:
+        setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, 0)
+        print("SLOW")
+    pass
+
+#checks pressed keys and call their functions
+def doKeys():
+    #check pressed keys here
+    strafe_left_pressed = isPressed(KeyFunctions.STRAFE_LEFT)
+    strafe_right_pressed = isPressed(KeyFunctions.STRAFE_RIGHT)
+
+    #TODO get rid of getattr
+    velocityX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value)
+    velocityY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value)
+    VelocityCapX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_CAP_X.value)
+    VelocityCapY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_CAP_Y.value)
+
+    AccelerationX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_X.value)
+    AccelerationY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_Y.value)
+
+    #slow down/stop if no keys pressed (x axis)
+    if not strafe_left_pressed and not strafe_right_pressed:
+        StrafeSlow(velocityX)
+        return
+
+    if strafe_left_pressed:
+        StrafeLeft(velocityX, VelocityCapX, AccelerationX)
+        pass
+    if strafe_right_pressed:
+        StrafeRight(velocityX, VelocityCapX, AccelerationX)
         pass
 
-    def StrafeRight(self):
-        if not self.velocityX >= self.VelocityCapX:
-            setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, self.velocityX + self.AccelerationX)
-        ECS.Entity.player_entity.setDirty()
-        print(self.velocityX)
-        pass
-
-    def StrafeSlow(self):
-        if self.velocityX == 0:
-            return
-        if self.velocityX < 0:
-            setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, 0)
-        elif self.velocityX > 0:
-            setattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value, 0)
-            print("SLOW")
-        pass
-
-    #checks pressed keys and call their functions
-    def checkKeys(self, pressed_keys):
-        #check pressed keys here
-        strafe_left_pressed = isPressed(KeyFunctions.STRAFE_LEFT)
-        strafe_right_pressed = isPressed(KeyFunctions.STRAFE_RIGHT)
-
-        #wot this? maybe improve?
-        self.velocityX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_X.value)
-        self.checkKeysvelocityY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_Y.value)
-        self.VelocityCapX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_CAP_X.value)
-        self.VelocityCapY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.VELOCITY_CAP_Y.value)
-
-        self.AccelerationX = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_X.value)
-        self.AccelerationY = getattr(ECS.Entity.player_entity, ECS.ComponentNames.ACCELERATION_Y.value)
-
-        #slow down/stop if no keys pressed (x axis)
-        if not strafe_left_pressed and not strafe_right_pressed:
-            self.StrafeSlow()
-            return
-
-        if strafe_left_pressed:
-            self.StrafeLeft()
-            pass
-        if strafe_right_pressed:
-            self.StrafeRight()
-            pass
 
 
-
-playerControls = PlayerControls()
 
 def KeyDown(event):
     pressed_keys.add(event.key)
@@ -92,9 +90,6 @@ def KeyUp(event):
     pressed_keys.remove(event.key)
 
 
-def doKeys():
-    playerControls.checkKeys(pressed_keys)
-    pass
 
 
 
