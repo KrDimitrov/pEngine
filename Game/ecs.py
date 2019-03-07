@@ -31,8 +31,8 @@ class Entity:
                         "\n!!The Component name should be either a Component Type, or a string!!")
         #Check if the entity has Positinal components passed, if not raise error
         try:
-            getattr(self, ComponentNames.POS_X.name)
-            getattr(self, ComponentNames.POS_Y.name)
+            self.POS_X
+            self.POS_Y
 
         except AttributeError:
             raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
@@ -44,20 +44,20 @@ class Entity:
                 Entity.collidable_list.append(self)
             if type == EntityType.MOVEABLE:
                 try:
-                    getattr(self, ComponentNames.VELOCITY_X.name)
-                    getattr(self, ComponentNames.VELOCITY_Y.name)
+                    self.VELOCITY_X
+                    self.VELOCITY_Y
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING VELOCITY COMPONENTS")
                 try:
-                    getattr(self, ComponentNames.ACCELERATION_X.name)
-                    getattr(self, ComponentNames.ACCELERATION_Y.name)
+                    self.ACCELERATION_X
+                    self.ACCELERATION_Y
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING ACCELERATION COMPONENTS!!! ")
                 try:
-                    getattr(self, ComponentNames.VELOCITY_CAP_X.name)
-                    getattr(self, ComponentNames.VELOCITY_CAP_Y.name)
+                    self.VELOCITY_CAP_X
+                    self.VELOCITY_CAP_Y
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING VELOCITY_CAP COMPONENTS!!")
@@ -65,7 +65,7 @@ class Entity:
                 Entity.moveable_list.append(self)
             if type == EntityType.TEXTURED:
                 try:
-                    getattr(self, ComponentNames.TEXTURE.name)
+                    self.TEXTURE
                 except AttributeError:
                     raise ValueError("BROKEN ENTITY with eid " + str(self.eid) +
                         "\nMISSING TEXTURE COMPONENT!!!")
